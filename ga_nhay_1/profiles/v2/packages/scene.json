@@ -1,0 +1,216 @@
+{
+  "gizmos-infos": {
+    "is2D": true,
+    "is3DIcon": false,
+    "iconSize": 2,
+    "gridVisible": true,
+    "gridColor": [
+      150,
+      150,
+      150,
+      255
+    ],
+    "isIconGizmo3D": false,
+    "iconGizmoSize": 2,
+    "isGridVisible": true
+  },
+  "camera": {
+    "fov": 45,
+    "far": 10000,
+    "near": 0.01,
+    "color": [
+      48,
+      48,
+      48,
+      255
+    ],
+    "wheelSpeed": 0.01,
+    "wanderSpeed": 100,
+    "enableAcceleration": true,
+    "far2D": 10000,
+    "near2D": 1,
+    "wheelSpeed2D": 6,
+    "size": "__default_design__"
+  },
+  "camera-infos": {
+    "f46876e4-e81b-4931-b493-6d367be385e7": {
+      "position": {
+        "x": 50,
+        "y": 50,
+        "z": 50
+      },
+      "rotation": {
+        "x": -0.27984814233312133,
+        "y": 0.3647051996310009,
+        "z": 0.11591689595929512,
+        "w": 0.8804762392171493
+      },
+      "viewCenter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "0d6c75ac-8171-4aaa-a146-3d530a2632f9": {
+      "position": {
+        "x": 10.21973320221359,
+        "y": 6.169951895908326,
+        "z": 5.714256630910988
+      },
+      "rotation": {
+        "x": -0.1313037671132083,
+        "y": 0.6275638470072921,
+        "z": 0.10846449419777598,
+        "w": 0.7597094129795346
+      },
+      "viewCenter": {
+        "x": -6.785,
+        "y": 0,
+        "z": 2.445
+      }
+    },
+    "853169ff-7bd0-4aa4-a152-b2ff5282ad96": {
+      "position": {
+        "x": 480,
+        "y": 320,
+        "z": 5000
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "viewCenter": {
+        "x": -10.00036365742497,
+        "y": 7.0357195747749,
+        "z": 383.9530549671106
+      }
+    },
+    "87e657b2-876e-45c5-97c9-ecb693882427": {
+      "position": {
+        "x": 548.1920536008479,
+        "y": 327.6386567037712,
+        "z": 5000
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "viewCenter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "2ccb6294-9db6-4588-ab45-b38d9987a2fd": {
+      "position": {
+        "x": 769.3537015276147,
+        "y": 359.6239717978849,
+        "z": 5000
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "viewCenter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "94a4dfa6-acdb-403d-bc15-8b51d06c83aa": {
+      "position": {
+        "x": 848.0763954129368,
+        "y": 391.74326237045375,
+        "z": 5000
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "viewCenter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "c175c41c-008c-40d6-b07b-897a4294cf8e": {
+      "position": {
+        "x": 401.31334433874315,
+        "y": 323.12202212983544,
+        "z": 5000
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "viewCenter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "c963f95c-8911-45af-9bab-57ab84c95452": {
+      "position": {
+        "x": 0,
+        "y": 0,
+        "z": 3.032526390823609
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      },
+      "viewCenter": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    }
+  },
+  "camera-uuids": [
+    "94a4dfa6-acdb-403d-bc15-8b51d06c83aa"
+  ],
+  "float-window": {
+    "position": {
+      "cc": {
+        "Camera": {
+          "dock": false,
+          "top": null,
+          "bottom": 10,
+          "left": null,
+          "right": 10
+        }
+      }
+    }
+  },
+  "game-view": {
+    "fullScreen": true,
+    "scaleValue": 200,
+    "sliderValue": 66,
+    "devicesInfo": {
+      "name": "16:9",
+      "type": "ratio",
+      "width": 16,
+      "height": 9
+    }
+  },
+  "scene": {
+    "native": false
+  },
+  "__version__": "1.0.0",
+  "builder": {},
+  "": {
+    "sculpt_brush_rotate": 0
+  }
+}

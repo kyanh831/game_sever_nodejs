@@ -1,0 +1,11 @@
+# Cocos Creator project files
+/ga_nhay_1/node_modules
+/ga_nhay_1/build
+/ga_nhay_1/temp
+/ga_nhay_1/library
+/ga_nhay_1/.cocos
+
+
+# Node.js server files
+/server_01/node_modules
+/server_01/.env

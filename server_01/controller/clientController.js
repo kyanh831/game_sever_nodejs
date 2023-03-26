@@ -16,6 +16,9 @@ async function handleClientEvent(data, socket, db) {
         const player = await getPlayerById(data.player.id, db);
         socket.emit('serverEvent', { eventType: 'getPlayer', player: player });
         break;
+       case 'test':
+        console.log("helo:",data);
+        break;
       default:
         console.log(`Unhandled client event type: ${data.eventType}`);
         break;

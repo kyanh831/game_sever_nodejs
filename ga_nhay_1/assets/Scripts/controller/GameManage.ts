@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Prefab, instantiate, RigidBody, Vec3 } from 'cc';
+import { _decorator, Component, Node, Prefab, instantiate, RigidBody, Vec3, Label } from 'cc';
 const { ccclass, property } = _decorator;
 const minX = -10; // minimum x coordinate
 const maxX = 10; // maximum x coordinate
@@ -27,6 +27,11 @@ export class GameManage extends Component {
     @property(Number)
     speed: number = 0.1;
 
+
+    @property(Label)
+    scoreLabel: Label = null;
+
+    private score = 0;
     private time: number = 0;
     private timeRemaining: number;
     private isGameStarted: boolean = false;
@@ -51,11 +56,19 @@ export class GameManage extends Component {
 
             // Add the new prefab to the scene
             this.node.addChild(newPrefab);
+
+
+            const player = this.node.parent.getChildByName('rooster_man_skin');
+            if (!player) {
+                console.error('Player not found!');
+                return;
+            }
+            player.on('updateScore', this.updateScore, this);
         }
         this.generate();
         this.randomCoins();
     }
-    randomCoins(){
+    randomCoins() {
         for (let i = 0; i < 10; i++) {
             // Instantiate the prefab
             const newPrefab = instantiate(this.coinsPrefab);
@@ -77,7 +90,7 @@ export class GameManage extends Component {
         const angleStep = 10;
         const spiralRadiusStep = 0.1;
         const heightStep = 0.1;
-        const center = new Vec3(0, -this.boundary, 0);
+        const center = new Vec3(0, 0, 0);
 
         for (let i = 0; i < 360; i += angleStep) {
             const angle = i * Math.PI / 180;
@@ -87,7 +100,7 @@ export class GameManage extends Component {
 
             const spiralRadius = spiralRadiusStep * i / angleStep;
             const heightOffset = heightStep * i / angleStep;
-            const position = new Vec3(x + Math.sin(this.time + spiralRadius) * spiralRadius, y + heightOffset , z/2 + 1 + Math.cos(this.time + spiralRadius) * spiralRadius);
+            const position = new Vec3(x + Math.sin(this.time + spiralRadius) * spiralRadius, y + heightOffset, z / 2 + 1 + Math.cos(this.time + spiralRadius) * spiralRadius);
 
             const node = instantiate(this.prefabList[5]);
             node.setPosition(position);
@@ -100,6 +113,10 @@ export class GameManage extends Component {
         this.isGameStarted = false;
         // Do something to end the game, such as showing a score screen or resetting the game.
         // ...
+    }
+    updateScore() {
+        this.score++;
+        this.scoreLabel.string = `Score: ${this.score}`;
     }
 }
 

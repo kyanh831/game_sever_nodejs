@@ -49,7 +49,7 @@ export class GameManage extends Component {
             const randomX = Math.random() * (maxX - minX) + minX;
             const randomY = Math.random() * (maxY - minY) + minY;
             const randomZ = Math.random() * (maxZ - minZ) + minZ;
-            const randomPosition = new Vec3(i, i / 2, randomZ);
+            const randomPosition = new Vec3(1, i / 2, randomZ);
 
             // Set the position of the new prefab
             newPrefab.setPosition(randomPosition);
@@ -69,7 +69,7 @@ export class GameManage extends Component {
         this.randomCoins();
     }
     randomCoins() {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 100; i++) {
             // Instantiate the prefab
             const newPrefab = instantiate(this.coinsPrefab);
 

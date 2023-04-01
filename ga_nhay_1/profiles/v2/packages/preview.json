@@ -4,5 +4,8 @@
       "platform": "browser"
     }
   },
-  "__version__": "1.0.1"
+  "__version__": "1.0.1",
+  "general": {
+    "start_scene": "63c03938-c76c-4347-9a97-f8dfcc7a9f7d"
+  }
 }

@@ -1,38 +1,33 @@
 const express = require('express');
-const http = require('http');
-const socketio = require('socket.io');
 const { connectToMongoDB } = require('./server');
 const { handleClientEvent } = require('./controller');
-const { emit } = require('process');
-
 const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
-
 const port = process.env.PORT || 3000;
 
+const WebSocket = require('ws');
 async function startServer() {
   try {
     const db = await connectToMongoDB();
     console.log('Connected to MongoDB');
 
-    io.on('connection', (socket) => {
-      console.log(`New client connected: ${socket.id}`);
+    const wss = new WebSocket.Server({ port: port });
 
-      socket.on('clientEvent', (data) => {
-        handleClientEvent(data, socket, db);
+    wss.on('connection', (socket) => {
+      console.log(`New client connected: ${socket._socket.remoteAddress}`);
+
+      socket.on('message', (data) => {
+        const message = JSON.parse(data.toString());
+        console.log('test:',message);
+        handleClientEvent(message, socket, db);
       });
-      socket.on('disconnect', () => {
-        console.log(`Client disconnected: ${socket}`);
+      socket.on('close', () => {
+        console.log(`Client disconnected: ${socket._socket.remoteAddress}`);
       })
     });
 
-    server.listen(port, () => {
-      console.log(`Server running on port ${port}`);
-    });
+    console.log(`Server running on port ${port}`);
   } catch (error) {
     console.error(error);
   }
 }
-
 startServer();

@@ -93,6 +93,8 @@ export class PlayerController extends Component {
     backToLogin() {
         director.loadScene('loginForm');
     }
+
+
     onDestroy() {
         if (this.webSocketController) {
             this.webSocketController.close();

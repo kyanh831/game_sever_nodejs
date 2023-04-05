@@ -1154,7 +1154,7 @@
     "_priority": 1073741824,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 1331.2854757929883,
+    "_orthoHeight": 371.9529411764706,
     "_near": 1,
     "_far": 2000,
     "_color": {
@@ -1997,7 +1997,7 @@
     },
     "_inputFlag": 5,
     "_inputMode": 6,
-    "_maxLength": 8,
+    "_maxLength": 50,
     "_id": "08fupJsEtLgKY7Jo/RGZTt"
   },
   {
@@ -2356,7 +2356,7 @@
     },
     "_inputFlag": 5,
     "_inputMode": 6,
-    "_maxLength": 8,
+    "_maxLength": 32,
     "_id": "d7T/DSlfRB5K4fSIlXaDMS"
   },
   {
@@ -2609,7 +2609,7 @@
       "b": 243,
       "a": 255
     },
-    "_string": "Name",
+    "_string": "Username",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
     "_actualFontSize": 20,
@@ -2715,7 +2715,7 @@
     },
     "_inputFlag": 0,
     "_inputMode": 6,
-    "_maxLength": 8,
+    "_maxLength": 24,
     "_id": "51Ili3r81CabJfFSOqQ4Uq"
   },
   {
@@ -2968,7 +2968,7 @@
       "b": 243,
       "a": 255
     },
-    "_string": "Pass",
+    "_string": "Password",
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
     "_actualFontSize": 20,

@@ -42,6 +42,8 @@ export class PlayerController extends Component {
         switch (data.eventType) {
             case 'logged':
                 this.notify.string = 'Login successful';
+                localStorage.setItem('sessionToken', data?.token);
+                localStorage.setItem('player', JSON.stringify(data?.player));
                 director.loadScene('menuMain');
                 break;
             case 'registered':

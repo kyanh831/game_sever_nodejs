@@ -17,9 +17,15 @@ async function handleClientEvent(data, ws, db) {
       else
         ws.send(JSON.stringify({ eventType: 'mess', message: 'user or pass not correct' }));
       break;
-    case 'logout':
-      await logout(data.player.id, db);
-      ws.send(JSON.stringify({ eventType: 'loggedOut' }));
+    case "logout":
+      // Look up the player ID based on the session token
+      const playerId = await getPlayerIdFromSessionToken(data.sessionToken, db);
+      if (playerId) {
+        await logout(playerId, db);
+        ws.send(JSON.stringify({ eventType: 'loggedOut' }));
+      } else {
+        ws.send(JSON.stringify({ eventType: 'mess', name: 'session not found' }));
+      }
       break;
     case 'register':
       const registeredPlayer = await register(data.player.userName, data.player.fullName, data.player.password, db);
@@ -55,10 +61,13 @@ async function login(name, password, db) {
   return player;
 }
 
-async function logout(id, db) {
-  const playersCollection = db.collection('players');
-  await playersCollection.updateOne({ id: id }, { $set: { isLoggedIn: false } });
+async function logout(playerId, db) {
+  const session = await db.sessions.findOne({ playerId });
+  if (session) {
+    await db.sessions.deleteOne({ playerId });
+  }
 }
+
 
 async function register(userName, fullName, password, db) {
   console.log('name: ' + userName);
@@ -95,6 +104,14 @@ async function getPlayerById(id, db) {
   const playersCollection = db.collection('players');
   const player = await playersCollection.findOne({ id: id });
   return player;
+}
+async function getPlayerIdFromSessionToken(sessionToken, sessions) {
+  const session = await sessions.findOne({ token: sessionToken });
+  return session ? session.playerId : null;
+}
+async function getPlayerFromSessionToken(playerId, sessions) {
+  const session = await sessions.findOne({ playerId: playerId });
+  return session ? session : null;
 }
 module.exports = {
   handleClientEvent,

@@ -1,5 +1,12 @@
 const { SHA256 } = require("crypto-js");
 const crypto = require("crypto");
+
+function validatePassword(password) {
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
+  return regex.test(password);
+}
+
 async function handleClientEvent(data, ws, db) {
   switch (data.eventType) {
     case "login":
@@ -14,50 +21,82 @@ async function handleClientEvent(data, ws, db) {
           _id: loggedInPlayer._id,
           LoginName: loggedInPlayer.LoginName,
           FullName: loggedInPlayer.FullName,
-          Score: loggedInPlayer.Score
-        }
+          Score: loggedInPlayer.Score,
+        };
         const sessions = db.collection("sessions");
-        const playerSession = await getPlayerFromSessionToken(loggedInPlayer._id, sessions);
-        console.log('ser_______', playerSession);
+        const playerSession = await getPlayerFromSessionToken(
+          loggedInPlayer._id,
+          sessions
+        );
+        console.log("ser_______", playerSession);
         if (playerSession == null) {
           // Generate a random session token
-          const sessionToken = crypto.randomBytes(16).toString('hex');
+          const sessionToken = crypto.randomBytes(16).toString("hex");
           console.log(`Session token: ${sessionToken}`);
-          sessions.insertOne({ playerId: loggedInPlayer._id, token: sessionToken });
-          ws.send(JSON.stringify({ eventType: "logged", player: player, token: sessionToken }));
+          sessions.insertOne({
+            playerId: loggedInPlayer._id,
+            token: sessionToken,
+          });
+          ws.send(
+            JSON.stringify({
+              eventType: "logged",
+              player: player,
+              token: sessionToken,
+            })
+          );
+        } else {
+          ws.send(
+            JSON.stringify({
+              eventType: "logged",
+              player: player,
+              token: playerSession?.token,
+            })
+          );
         }
-        else {
-          ws.send(JSON.stringify({ eventType: "logged", player: player, token: playerSession?.token }));
-        }
-      }
-      else
-        ws.send(JSON.stringify({ eventType: 'mess', message: 'user or pass not correct' }));
+      } else
+        ws.send(
+          JSON.stringify({
+            eventType: "mess",
+            message: "user or pass not correct",
+          })
+        );
       break;
     case "logout":
       // Look up the player ID based on the session token
       const playerId = await getPlayerIdFromSessionToken(data.sessionToken, db);
       if (playerId) {
         await logout(playerId, db);
-        ws.send(JSON.stringify({ eventType: 'loggedOut' }));
+        ws.send(JSON.stringify({ eventType: "loggedOut" }));
       } else {
-        ws.send(JSON.stringify({ eventType: 'mess', name: 'session not found' }));
+        ws.send(
+          JSON.stringify({ eventType: "mess", name: "session not found" })
+        );
       }
       break;
-    case 'register':
-      const registeredPlayer = await register(data.player.userName, data.player.fullName, data.player.password, db);
+    case "register":
+      const registeredPlayer = await register(
+        data.player.userName,
+        data.player.fullName,
+        data.player.password,
+        db
+      );
       console.log("new:", registeredPlayer);
       if (registeredPlayer?._id)
-        ws.send(JSON.stringify({ eventType: 'registered', player: registeredPlayer }));
+        ws.send(
+          JSON.stringify({ eventType: "registered", player: registeredPlayer })
+        );
       else
-        ws.send(JSON.stringify({ eventType: 'mess', message: "can not create user" }));
+        ws.send(
+          JSON.stringify({ eventType: "mess", message: "can not create user" })
+        );
       break;
-    case 'getPlayer':
+    case "getPlayer":
       const player = await getPlayerById(data.player.id, db);
-      ws.send(JSON.stringify({ eventType: 'getPlayer', player: player }));
+      ws.send(JSON.stringify({ eventType: "getPlayer", player: player }));
       break;
-    case 'test':
+    case "test":
       console.log("helo 123:", data);
-      var data = { eventType: 'mess', message: 'user or pass not correct' }
+      var data = { eventType: "mess", message: "user or pass not correct" };
       ws.send(JSON.stringify(data));
       break;
     default:
@@ -67,7 +106,6 @@ async function handleClientEvent(data, ws, db) {
 }
 async function login(name, password, db) {
   const playersCollection = db.collection("players");
-
 
   const f_password = await SHA256(password);
   const player = await playersCollection.findOne({
@@ -84,14 +122,16 @@ async function logout(playerId, db) {
   }
 }
 
-
 async function register(userName, fullName, password, db) {
-  console.log('name: ' + userName);
-  console.log('name: ' + fullName);
-  console.log('pass: ' + password);
-  const playersCollection = db.collection('players');
-  const existingPlayer = await playersCollection.findOne({ LoginName: userName });
-  if (existingPlayer) {   
+  console.log("name: " + userName);
+  console.log("name: " + fullName);
+  console.log("pass: " + password);
+
+  const playersCollection = db.collection("players");
+  const existingPlayer = await playersCollection.findOne({
+    LoginName: userName,
+  });
+  if (existingPlayer) {
     console.log(`Player with name ${userName} already exists`);
     return;
   }
@@ -99,6 +139,7 @@ async function register(userName, fullName, password, db) {
     console.log(`Password is not valid`);
     return;
   }
+
   const f_password = await SHA256(password);
   console.log("Password after encrypt: " + f_password);
   const newPlayer = {
@@ -106,18 +147,16 @@ async function register(userName, fullName, password, db) {
     LoginName: userName,
     Password: password,
     Score: 0,
-  }
-  try{
+  };
+  try {
     await playersCollection.insertOne(newPlayer);
-  }
-  catch(e)
-  {
-    console.log('error:',e);
+  } catch (e) {
+    console.log("error:", e);
   }
   return newPlayer;
 }
 async function getPlayerById(id, db) {
-  const playersCollection = db.collection('players');
+  const playersCollection = db.collection("players");
   const player = await playersCollection.findOne({ id: id });
   return player;
 }

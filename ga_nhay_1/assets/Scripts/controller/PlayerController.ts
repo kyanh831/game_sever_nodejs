@@ -77,6 +77,7 @@ export class PlayerController extends Component {
         this.webSocketController.send(data);
         // code here
     }
+
     register() {
         var data = {
             eventType: 'register',

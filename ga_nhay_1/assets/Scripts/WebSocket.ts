@@ -15,7 +15,7 @@ export class WebSocketController extends EventTarget {
           WebSocketController.instance = new WebSocketController(url);
         }
         return WebSocketController.instance;
-      }
+    }
 
     private onOpen(event: Event): void {
         console.log('WebSocket connection opened');

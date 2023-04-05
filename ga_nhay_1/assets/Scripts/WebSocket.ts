@@ -1,5 +1,6 @@
 import { EventTarget } from 'cc';
 export class WebSocketController extends EventTarget {
+    private static instance: WebSocketController;
     private socket: WebSocket;
     constructor(url: string) {
         super();
@@ -9,6 +10,12 @@ export class WebSocketController extends EventTarget {
         this.socket.addEventListener('close', this.onClose.bind(this));
         this.socket.addEventListener('error', this.onError.bind(this));
     }
+    public static getInstance(url: string): WebSocketController {
+        if (!WebSocketController.instance) {
+          WebSocketController.instance = new WebSocketController(url);
+        }
+        return WebSocketController.instance;
+      }
 
     private onOpen(event: Event): void {
         console.log('WebSocket connection opened');
@@ -40,4 +47,5 @@ export class WebSocketController extends EventTarget {
     public close(): void {
         this.socket.close();
     }
+    
 }

@@ -1,25 +1,47 @@
-const { SHA256 } = require('crypto-js');
-
-//kiểm tra độ dài mật khẩu, có chữ hoa, chữ thường, số
-function validatePassword(password) {
-  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-
-  return regex.test(password);
-}
-
+const { SHA256 } = require("crypto-js");
+const crypto = require("crypto");
 async function handleClientEvent(data, ws, db) {
   switch (data.eventType) {
-    case 'login':
-      const loggedInPlayer = await login(data.player.userName, data.player.password, db);
-      console.log('user logged in', loggedInPlayer);
-      if (loggedInPlayer?._id)
-        ws.send(JSON.stringify({ eventType: 'logged', player: loggedInPlayer }));
+    case "login":
+      const loggedInPlayer = await login(
+        data.player.userName,
+        data.player.password,
+        db
+      );
+      console.log("user logged in", loggedInPlayer);
+      if (loggedInPlayer) {
+        const player = {
+          _id: loggedInPlayer._id,
+          LoginName: loggedInPlayer.LoginName,
+          FullName: loggedInPlayer.FullName,
+          Score: loggedInPlayer.Score
+        }
+        const sessions = db.collection("sessions");
+        const playerSession = await getPlayerFromSessionToken(loggedInPlayer._id, sessions);
+        console.log('ser_______', playerSession);
+        if (playerSession == null) {
+          // Generate a random session token
+          const sessionToken = crypto.randomBytes(16).toString('hex');
+          console.log(`Session token: ${sessionToken}`);
+          sessions.insertOne({ playerId: loggedInPlayer._id, token: sessionToken });
+          ws.send(JSON.stringify({ eventType: "logged", player: player, token: sessionToken }));
+        }
+        else {
+          ws.send(JSON.stringify({ eventType: "logged", player: player, token: playerSession?.token }));
+        }
+      }
       else
         ws.send(JSON.stringify({ eventType: 'mess', message: 'user or pass not correct' }));
       break;
-    case 'logout':
-      await logout(data.player.id, db);
-      ws.send(JSON.stringify({ eventType: 'loggedOut' }));
+    case "logout":
+      // Look up the player ID based on the session token
+      const playerId = await getPlayerIdFromSessionToken(data.sessionToken, db);
+      if (playerId) {
+        await logout(playerId, db);
+        ws.send(JSON.stringify({ eventType: 'loggedOut' }));
+      } else {
+        ws.send(JSON.stringify({ eventType: 'mess', name: 'session not found' }));
+      }
       break;
     case 'register':
       const registeredPlayer = await register(data.player.userName, data.player.fullName, data.player.password, db);
@@ -55,10 +77,13 @@ async function login(name, password, db) {
   return player;
 }
 
-async function logout(id, db) {
-  const playersCollection = db.collection('players');
-  await playersCollection.updateOne({ id: id }, { $set: { isLoggedIn: false } });
+async function logout(playerId, db) {
+  const session = await db.sessions.findOne({ playerId });
+  if (session) {
+    await db.sessions.deleteOne({ playerId });
+  }
 }
+
 
 async function register(userName, fullName, password, db) {
   console.log('name: ' + userName);
@@ -95,6 +120,14 @@ async function getPlayerById(id, db) {
   const playersCollection = db.collection('players');
   const player = await playersCollection.findOne({ id: id });
   return player;
+}
+async function getPlayerIdFromSessionToken(sessionToken, sessions) {
+  const session = await sessions.findOne({ token: sessionToken });
+  return session ? session.playerId : null;
+}
+async function getPlayerFromSessionToken(playerId, sessions) {
+  const session = await sessions.findOne({ playerId: playerId });
+  return session ? session : null;
 }
 module.exports = {
   handleClientEvent,

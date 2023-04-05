@@ -1151,7 +1151,7 @@
     "_priority": 1073741824,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 574.978229317852,
+    "_orthoHeight": 2000.1335559265444,
     "_near": 1,
     "_far": 2000,
     "_color": {
@@ -1596,6 +1596,7 @@
     },
     "_enabled": true,
     "__prefab": null,
+    "fullName": null,
     "userName": {
       "__id__": 68
     },
@@ -1605,10 +1606,10 @@
     "btnLogin": {
       "__id__": 64
     },
+    "btnRegister": null,
     "notify": {
       "__id__": 88
     },
-    "wsServer": "ws://localhost:3000",
     "_id": "b1+Dy9EIZDA6RGngE3h8ij"
   },
   {

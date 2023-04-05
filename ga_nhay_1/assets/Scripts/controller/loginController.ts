@@ -8,7 +8,8 @@ export class loginController extends Component {
     }
 
     update(deltaTime: number) {
-        
+
     }
 }
-
+
+

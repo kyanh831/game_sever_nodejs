@@ -8,6 +8,8 @@ export class menuStart extends Component {
     @property(Button)
     btnLogin: Button =null;
     @property(Button)
+    btnLogout: Button =null;
+    @property(Button)
     btnRegister: Button =null;
     @property(Button)
     btnMainMenu: Button =null;
@@ -41,6 +43,7 @@ export class menuStart extends Component {
     MainMenu(){
         director.loadScene('menuMain');
     }
+    
     createPrefab() {
         // Instantiate the prefab
         const prefabInstance = instantiate(this.prefab);

@@ -1,5 +1,4 @@
-
-
+const SHA256 = require('bcrypt');
 async function handleClientEvent(data, ws, db) {
   switch (data.eventType) {
     case 'login':
@@ -38,7 +37,7 @@ async function handleClientEvent(data, ws, db) {
 }
 async function login(name, password, db) {
   const playersCollection = db.collection('players');
-  const player = await playersCollection.findOne({ LoginName: name, Password: password });
+  const player = await playersCollection.findOne({ LoginName: name, Password: SHA256(password) });
   return player;
 }
 
@@ -60,7 +59,7 @@ async function register(userName, fullName, password, db) {
   const newPlayer = {
     FullName: fullName,
     LoginName: userName,
-    Password: password,
+    Password: SHA256(password),
     Score: 0,
   }
   try{

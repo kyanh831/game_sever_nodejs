@@ -789,7 +789,11 @@
     "_priority": 1073741824,
     "_fov": 45,
     "_fovAxis": 0,
+<<<<<<< HEAD
     "_orthoHeight": 394.214463840399,
+=======
+    "_orthoHeight": 702.5777777777778,
+>>>>>>> 2da60b7cdc535b5a773a602854e841d7af693add
     "_near": 1,
     "_far": 2000,
     "_color": {
@@ -1502,7 +1506,11 @@
     "_id": "93kD7EE0REIoNQ5xlBOAww"
   },
   {
+<<<<<<< HEAD
     "__type__": "1ce553cJ+9DsrH4zoaE0+pQ",
+=======
+    "__type__": "574cdeYzY5LSp/8DS8tC9mD",
+>>>>>>> 2da60b7cdc535b5a773a602854e841d7af693add
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -1523,7 +1531,11 @@
       "__id__": 60
     },
     "notify": null,
+<<<<<<< HEAD
     "_id": "24J+1VHOBNQYD6ovSt/tRL"
+=======
+    "_id": "0881Q3F6VIOZErjdF7G5QS"
+>>>>>>> 2da60b7cdc535b5a773a602854e841d7af693add
   },
   {
     "__type__": "cc.Button",
@@ -2099,7 +2111,11 @@
       "__id__": 51
     },
     "component": "",
+<<<<<<< HEAD
     "_componentId": "1ce553cJ+9DsrH4zoaE0+pQ",
+=======
+    "_componentId": "574cdeYzY5LSp/8DS8tC9mD",
+>>>>>>> 2da60b7cdc535b5a773a602854e841d7af693add
     "handler": "Logout",
     "customEventData": ""
   },

@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 const { SHA256 } = require("crypto-js");
 const crypto = require("crypto");
 
+=======
+const { SHA256 } = require('crypto-js');
+
+//kiểm tra độ dài mật khẩu, có chữ hoa, chữ thường, số
+>>>>>>> 2da60b7cdc535b5a773a602854e841d7af693add
 function validatePassword(password) {
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
@@ -9,6 +15,7 @@ function validatePassword(password) {
 
 async function handleClientEvent(data, ws, db) {
   switch (data.eventType) {
+<<<<<<< HEAD
     case "login":
       const loggedInPlayer = await login(
         data.player.userName,
@@ -60,6 +67,15 @@ async function handleClientEvent(data, ws, db) {
             message: "user or pass not correct",
           })
         );
+=======
+    case 'login':
+      const loggedInPlayer = await login(data.player.userName, data.player.password, db);
+      console.log('user logged in', loggedInPlayer);
+      if (loggedInPlayer?._id)
+        ws.send(JSON.stringify({ eventType: 'logged', player: loggedInPlayer }));
+      else
+        ws.send(JSON.stringify({ eventType: 'mess', message: 'user or pass not correct' }));
+>>>>>>> 2da60b7cdc535b5a773a602854e841d7af693add
       break;
     case "logout":
       // Look up the player ID based on the session token

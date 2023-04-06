@@ -20,7 +20,7 @@ export class menuStart extends Component {
     notify: Label = null;
 
     private fullName: String = null;
-    private token: String = null;
+    private sessionToken: String = null;
 
 
     onload(){
@@ -32,10 +32,11 @@ export class menuStart extends Component {
         webSocketController.on('close', this.onWebSocketClose.bind(this));
         webSocketController.on('error', this.onWebSocketError.bind(this));
         this.btnMainMenu.node.active = false;
-        const player = JSON.parse(sys.localStorage.getItem('player'));
+        const token = JSON.parse(sys.localStorage.getItem('token'));
+        const player =token?.player;
         this.fullName = player?.FullName;
-        this.token = sys.localStorage.getItem('sessionToken');
-        if(this.token !=undefined && this.fullName !=undefined) {
+        this.sessionToken = token?.sessionToken;
+        if(token) {
             this.btnRegister.node.active = false;
             this.btnLogin.node.active = false;
             this.btnMainMenu.node.active = true;

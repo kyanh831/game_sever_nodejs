@@ -37,7 +37,3 @@ export class menu extends Component {
 }
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2da60b7cdc535b5a773a602854e841d7af693add

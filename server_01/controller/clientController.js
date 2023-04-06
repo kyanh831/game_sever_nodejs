@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 const { SHA256 } = require("crypto-js");
 const crypto = require("crypto");
+let RegisterMessage = "";
 
-=======
-const { SHA256 } = require('crypto-js');
-
-//kiểm tra độ dài mật khẩu, có chữ hoa, chữ thường, số
->>>>>>> 2da60b7cdc535b5a773a602854e841d7af693add
 function validatePassword(password) {
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
@@ -15,7 +10,6 @@ function validatePassword(password) {
 
 async function handleClientEvent(data, ws, db) {
   switch (data.eventType) {
-<<<<<<< HEAD
     case "login":
       const loggedInPlayer = await login(
         data.player.userName,
@@ -67,15 +61,6 @@ async function handleClientEvent(data, ws, db) {
             message: "user or pass not correct",
           })
         );
-=======
-    case 'login':
-      const loggedInPlayer = await login(data.player.userName, data.player.password, db);
-      console.log('user logged in', loggedInPlayer);
-      if (loggedInPlayer?._id)
-        ws.send(JSON.stringify({ eventType: 'logged', player: loggedInPlayer }));
-      else
-        ws.send(JSON.stringify({ eventType: 'mess', message: 'user or pass not correct' }));
->>>>>>> 2da60b7cdc535b5a773a602854e841d7af693add
       break;
     case "logout":
       // Look up the player ID based on the session token
@@ -101,10 +86,7 @@ async function handleClientEvent(data, ws, db) {
         ws.send(
           JSON.stringify({ eventType: "registered", player: registeredPlayer })
         );
-      else
-        ws.send(
-          JSON.stringify({ eventType: "mess", message: "can not create user" })
-        );
+      else ws.send(JSON.stringify({ eventType: "mess", message: "avc" }));
       break;
     case "getPlayer":
       const player = await getPlayerById(data.player.id, db);
@@ -147,12 +129,24 @@ async function register(userName, fullName, password, db) {
   const existingPlayer = await playersCollection.findOne({
     LoginName: userName,
   });
+
   if (existingPlayer) {
     console.log(`Player with name ${userName} already exists`);
     return;
   }
-  if (!validatePassword(password)) {
-    console.log(`Password is not valid`);
+
+  if (!userName.trim()) {
+    RegisterMessage = "username Cannot be empty";
+    return;
+  } else if (!fullName.trim()) {
+    RegisterMessage = "fullname Cannot be empty";
+    return;
+  } else if (!password.trim()) {
+    RegisterMessage = "password Cannot be empty";
+    return;
+  } else if (!validatePassword(password)) {
+    RegisterMessage =
+      "password must be at least 8 characters, contain at least one uppercase letter, one lowercase letter, and one number";
     return;
   }
 
@@ -171,6 +165,7 @@ async function register(userName, fullName, password, db) {
   }
   return newPlayer;
 }
+
 async function getPlayerById(id, db) {
   const playersCollection = db.collection("players");
   const player = await playersCollection.findOne({ id: id });

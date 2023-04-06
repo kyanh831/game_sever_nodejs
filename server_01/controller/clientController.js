@@ -24,10 +24,21 @@ async function handleClientEvent(data, ws, db) {
           const sessionToken = crypto.randomBytes(16).toString('hex');
           console.log(`Session token: ${sessionToken}`);
           sessions.insertOne({ playerId: loggedInPlayer._id, token: sessionToken });
-          ws.send(JSON.stringify({ eventType: "logged", player: player, token: sessionToken }));
+          ws.send(JSON.stringify({
+            eventType: "logged", token: {
+              player: player,
+              sessionToken: sessionToken
+            }
+          }));
         }
         else {
-          ws.send(JSON.stringify({ eventType: "logged", player: player, token: playerSession?.token }));
+          ws.send(JSON.stringify({
+            eventType: "logged",
+            token: {
+              player: player,
+              sessionToken: playerSession?.token
+            }
+          }));
         }
       }
       else
@@ -39,13 +50,13 @@ async function handleClientEvent(data, ws, db) {
         );
       break;
     case "logout":
-      // Look up the player ID based on the session token
-      const playerId = await getPlayerIdFromSessionToken(data.sessionToken, db);
+      const sessions = db.collection("sessions");
+      const playerId = await getPlayerIdFromSessionToken(data.sessionToken, sessions);
       if (playerId) {
-        await logout(playerId, db);
+        await logout(playerId, sessions);
         ws.send(JSON.stringify({ eventType: 'loggedOut' }));
       } else {
-        ws.send(JSON.stringify({ eventType: 'mess', name: 'session not found' }));
+        ws.send(JSON.stringify({ eventType: 'logoutMess', name: 'session not found' }));
       }
       break;
     case "register":
@@ -89,10 +100,10 @@ async function login(name, password, db) {
   return player;
 }
 
-async function logout(playerId, db) {
-  const session = await db.sessions.findOne({ playerId });
+async function logout(playerId, sessions) {
+  const session = await sessions.findOne({ playerId });
   if (session) {
-    await db.sessions.deleteOne({ playerId });
+    await sessions.deleteOne({ playerId });
   }
 }
 

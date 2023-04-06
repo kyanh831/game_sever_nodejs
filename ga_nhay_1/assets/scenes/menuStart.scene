@@ -1131,7 +1131,7 @@
     "_priority": 1073741824,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 661.3689482470785,
+    "_orthoHeight": 662.4373956594325,
     "_near": 1,
     "_far": 2000,
     "_color": {
@@ -2202,7 +2202,7 @@
     "_actualFontSize": 60,
     "_fontSize": 60,
     "_fontFamily": "Arial",
-    "_lineHeight": 40,
+    "_lineHeight": 60,
     "_overflow": 0,
     "_enableWrapText": true,
     "_font": null,
@@ -2235,8 +2235,8 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": 531.306,
-      "y": 34.556,
+      "x": 482.057,
+      "y": -73.579,
       "z": 0
     },
     "_lrot": {
@@ -2274,7 +2274,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 0,
-      "height": 50.4
+      "height": 75.6
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",

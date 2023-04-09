@@ -1,6 +1,6 @@
 const express = require('express');
 const { connectToMongoDB } = require('./server');
-const { handleClientEvent } = require('./controller');
+const { handleClientEvent, handleGameEvent } = require('./controller');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -17,8 +17,11 @@ async function startServer() {
 
       socket.on('message', (data) => {
         const message = JSON.parse(data.toString());
-        console.log('test:',message);
-        handleClientEvent(message, socket, db);
+        if(message?.type==='game'){
+          handleGameEvent(message,socket,db);
+        }else{
+          handleClientEvent(message, socket, db);
+        }
       });
       socket.on('close', () => {
         console.log(`Client disconnected: ${socket._socket.remoteAddress}`);

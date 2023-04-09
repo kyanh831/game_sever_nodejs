@@ -2,12 +2,12 @@
   "ver": "1.1.43",
   "importer": "prefab",
   "imported": true,
-  "uuid": "cbcb5829-a10c-4246-9577-1fae0936c948",
+  "uuid": "03d1f99e-ef75-4b77-9d65-468a27e38904",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "rooster_man_skin"
+    "syncNodeName": "playerRoom"
   }
 }

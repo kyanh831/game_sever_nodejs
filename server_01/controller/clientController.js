@@ -1,12 +1,6 @@
 const { SHA256 } = require("crypto-js");
 const crypto = require("crypto");
-let RegisterMessage = "";
-
-function validatePassword(password) {
-  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-
-  return regex.test(password);
-}
+const { ObjectId } = require('mongodb');
 
 async function handleClientEvent(data, ws, db) {
   switch (data.eventType) {
@@ -88,6 +82,27 @@ async function handleClientEvent(data, ws, db) {
       const player = await getPlayerById(data.player.id, db);
       ws.send(JSON.stringify({ eventType: "getPlayer", player: player }));
       break;
+    case "updateScore":
+      console.log(data);
+      const updateScore = await updateScorePlayer(
+        data.player._id,
+        data.player.score,
+        db
+      );
+      if (updateScore) {
+        var data = { eventType: "updatedScore", data: "update success" };
+        ws.send(JSON.stringify(data));
+      }
+      else {
+        var data = { eventType: "mess", message: "Something wrong please try again" };
+        ws.send(JSON.stringify(data));
+      }
+      break;
+    case 'playerScore':
+      const score = await getPlayerScore(data.player._id, db);
+      var data = {eventType: 'playerScore', score: score};
+      ws.send(JSON.stringify(data));
+      break;
     case "test":
       console.log("helo 123:", data);
       var data = { eventType: "mess", message: "user or pass not correct" };
@@ -98,6 +113,28 @@ async function handleClientEvent(data, ws, db) {
       break;
   }
 }
+
+async function getPlayerScore(id,db){
+  const playersCollection = db.collection('players');
+  const player = await playersCollection.findOne({_id:new ObjectId(id)});
+  return player ? player.Score : 0;
+}
+
+async function updateScorePlayer(id, score, db) {
+  const playersCollection = db.collection("players");
+  try {
+    const player = await playersCollection.findOne({ _id: new ObjectId(id) });
+    const oldScore = player.Score;
+    const newScore = oldScore + score;
+    await playersCollection.updateOne({ _id: new ObjectId(id) }, { $set: { Score: newScore } });
+  } catch (error) {
+    return false;
+  }
+
+  return true;
+
+}
+
 async function login(name, password, db) {
   const playersCollection = db.collection("players");
 

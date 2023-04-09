@@ -17,6 +17,10 @@ export class mainMenu extends Component {
     notifyName: Label = null;
     @property(Label)
     notifyScore: Label = null;
+    onLoad(){
+        this.getPlayerScore();
+    }
+
     start() {
         const token = JSON.parse(sys.localStorage.getItem('token'));
         const player =token?.player;
@@ -35,6 +39,10 @@ export class mainMenu extends Component {
         console.log('WebSocket message_:', data);
         // handle message here
         switch (data.eventType) {
+            case 'playerScore':
+                if(this.notifyScore)
+                    this.notifyScore.string = `Điểm: ${data.score}`
+                break;
             case 'loggedOut':
                 sys.localStorage.removeItem('token');
                 director.loadScene('menuStart');
@@ -54,6 +62,21 @@ export class mainMenu extends Component {
 
     private onWebSocketError(event: Event): void {
         console.error('WebSocket error:', event);
+        
+    }
+    getPlayerScore() {
+        const token = JSON.parse(sys.localStorage.getItem('token'));
+        if(!token){
+            return;
+        }
+        const _id = token.player._id;
+        const data = {
+            eventType:'playerScore',
+            player:{
+                _id:_id
+            }
+        }
+        webSocketController.send(data);
     }
     Logout() {
         this.btnLogout.interactable = false;
@@ -68,6 +91,13 @@ export class mainMenu extends Component {
             webSocketController.send(data);
         }
     }
+    OneVS1(){
+        director.loadScene('test');
+    }
+    loadRoom(){
+        director.loadScene('Room');
+    }
+
 }
 
 

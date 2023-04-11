@@ -7,6 +7,14 @@
     {
       "name": "COPY",
       "value": 2
+    },
+    {
+      "name": "Player",
+      "value": 4
+    },
+    {
+      "name": "Coin",
+      "value": 8
     }
   ],
   "general": {
@@ -21,5 +29,25 @@
       "visible": true
     }
   },
-  "custom_joint_texture_layouts": []
+  "custom_joint_texture_layouts": [],
+  "physics": {
+    "collisionGroups": [
+      {
+        "index": 1,
+        "name": "Player"
+      },
+      {
+        "index": 2,
+        "name": "Coins"
+      }
+    ],
+    "collisionMatrix": {
+      "0": 7,
+      "1": 5,
+      "2": 3
+    },
+    "gravity": {
+      "y": -10
+    }
+  }
 }

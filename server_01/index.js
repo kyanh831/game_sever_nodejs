@@ -1,33 +1,36 @@
 const express = require('express');
 const { connectToMongoDB } = require('./server');
-const { handleClientEvent, handleGameEvent } = require('./controller');
+const { handleClientEvent, handleGameEvent,handleGamePlayEvent } = require('./controller');
 const app = express();
 const port = process.env.PORT || 3000;
-
+const clients = [];
 const WebSocket = require('ws');
 async function startServer() {
   try {
     const db = await connectToMongoDB();
-    console.log('Connected to MongoDB');
-
     const wss = new WebSocket.Server({ port: port });
 
     wss.on('connection', (socket) => {
       console.log(`New client connected: ${socket._socket.remoteAddress}`);
-
+      clients.push(socket);
       socket.on('message', (data) => {
         const message = JSON.parse(data.toString());
-        if(message?.type==='game'){
-          handleGameEvent(message,socket,db);
-        }else{
-          handleClientEvent(message, socket, db);
+        switch (message.type) {
+          case 'game':
+            handleGameEvent(message, socket, db, clients);
+            break;
+          case 'inGame':
+            handleGamePlayEvent(message, socket, db, clients);
+            break;
+          default:
+            handleClientEvent(message, socket, db);
+            break;
         }
       });
       socket.on('close', () => {
         console.log(`Client disconnected: ${socket._socket.remoteAddress}`);
       })
     });
-
     console.log(`Server running on port ${port}`);
   } catch (error) {
     console.error(error);

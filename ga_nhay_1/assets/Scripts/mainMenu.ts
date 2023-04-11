@@ -91,13 +91,6 @@ export class mainMenu extends Component {
             webSocketController.send(data);
         }
     }
-    OneVS1(){
-        director.loadScene('test');
-    }
-    loadRoom(){
-        director.loadScene('Room');
-    }
-
 }
 
 
